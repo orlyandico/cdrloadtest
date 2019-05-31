@@ -9,10 +9,10 @@ use IO::Handle;
 
 # randomly select an aNumber from the (potentially very large) number of tables in the system
 # this simulates a CRM end-user looking for a specific phone number, and is a straight select across one
-# table (or a group of sub-partitions or sharded tables) - this version does a UNION ALL across all tables
-#my $select_mode = "TABLE";
+# table (or a group of sub-partitions or sharded tables)
 
-# if $select_mode = "PARTITION" then we use the partitioned table
+# PICK ONE OF THESE TWO - "TABLE" for per-hour tables, or "PARTITION" for per-hour partitions
+#my $select_mode = "TABLE";
 my $select_mode = "PARTITION";
 
 # define database host and connection handle
@@ -26,6 +26,8 @@ my $dbpassword = "welcome1";
 # change these parameters to suit your own workload
 my $numWorkers = 32;
 my $sleepTime  = 3;
+
+### YOU DON'T NEED TO TOUCH ANYTHING BELOW THIS LINE ###
 
 # create the sub-processes
 my $pc = 0;

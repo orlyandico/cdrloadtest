@@ -8,7 +8,7 @@ use Time::HiRes;
 use IO::Handle;
 use warnings;
 
-# define table insert mode
+# define table insert mode: PICK ONLY ONE OF THESE!
 my $TABLE_PER_HOUR     = 0;
 my $PARTITION_PER_HOUR = 1;
 
@@ -19,17 +19,14 @@ my $dbuser = "orly";
 my $dbpassword = "welcome1";
 
 # number of rows per batch insert
-# too large a batch size is not good; 900 seems empirically OK
+# too large a batch size is not good; numbers between 1000 - 5000 seem OK
+# larger batch sizes usually result in better records/second but increase replica lag
 my $batchSize = 6000;
 
-# number of parallel tasks to do; too many causes thrashing
-
-# these are on an r4.8xlarge Aurora PostgreSQL
-# 12 writers @ 1800 = 81 commits/sec = 146K
-# 12 writers @ 900 = 130 commits/sec = 117K
-# 32 writers @ 300 = 540 commits/sec = 162K
-
+# number of parallel tasks to do; too many causes thrashing: you normally want these to be <= the number of vCPU on the database
 my $numWorkers = 16;
+
+### YOU DON'T NEED TO TOUCH ANYTHING BELOW THIS LINE ###
 
 # create the sub-processes
 my $pc = 0;
